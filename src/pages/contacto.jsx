@@ -1,80 +1,174 @@
-function Contacto(){
-    return (
-        <>
-            <header>
+import { useState } from 'react'
+import { Link } from 'react-router'
 
+import Input from '../components/forms/Input'
+import Button from '../components/forms/Button'
+
+function Contacto() {
+  const [
+    datos,
+    setDatos,
+  ] = useState({
+    nombre: '',
+    correo: '',
+    mensaje: '',
+  })
+
+  const [
+    enviado,
+    setEnviado,
+  ] = useState(false)
+
+  const actualizarCampo = (
+    event
+  ) => {
+    const {
+      name,
+      value,
+    } = event.target
+
+    setDatos(
+      (anterior) => ({
+        ...anterior,
+        [name]: value,
+      })
+    )
+
+    setEnviado(false)
+  }
+
+  const enviar = (
+    event
+  ) => {
+    event.preventDefault()
+
+    setEnviado(true)
+
+    setDatos({
+      nombre: '',
+      correo: '',
+      mensaje: '',
+    })
+  }
+
+  return (
+    <>
+      <header>
         <div className="logo">
-            <a href="../index.html">
-                Ferretería Los Maestros
-            </a>
+          <Link to="/">
+            Ferretería Los Maestros
+          </Link>
         </div>
 
         <nav>
-            <a href="../index.html">Inicio</a>
-            <a href="productos.html">Productos</a>
-            <a href="blogs.html">Blog</a>
-            <a href="nosotros.html">Nosotros</a>
-            <a href="contacto.html">Contacto</a>
-            <a href="login.html">Iniciar sesión</a>
+          <Link to="/">
+            Inicio
+          </Link>
 
-            <a href="carrito.html">
-                Carrito
-                <span id="contador-carrito">0</span>
-            </a>
+          <Link to="/productos">
+            Productos
+          </Link>
+
+          <Link to="/blogs">
+            Blog
+          </Link>
+
+          <Link to="/nosotros">
+            Nosotros
+          </Link>
+
+          <Link to="/contacto">
+            Contacto
+          </Link>
+
+          <Link to="/login">
+            Iniciar sesión
+          </Link>
+
+          <Link to="/carrito">
+            Carrito
+          </Link>
         </nav>
+      </header>
 
-    </header>
-
-    <main>
+      <main>
 
         <section className="formulario-container">
 
-            <h1>Contáctanos</h1>
+          <h1>
+            Contáctanos
+          </h1>
 
-            <form id="form-contacto">
+          <p>
+            ¿Tienes una consulta?
+            Envíanos un mensaje.
+          </p>
 
-                <label htmlFor="contacto-nombre">
-                    Nombre
-                </label>
+          <form
+            onSubmit={enviar}
+          >
 
-                <input
-                    type="text"
-                    id="contacto-nombre"
-                    maxLength="100"
-                    required
-                />
+            <Input
+              label="Nombre"
+              id="contacto-nombre"
+              name="nombre"
+              value={
+                datos.nombre
+              }
+              onChange={
+                actualizarCampo
+              }
+              required
+            />
 
-                <label htmlFor="contacto-correo">
-                    Correo
-                </label>
+            <Input
+              label="Correo"
+              id="contacto-correo"
+              name="correo"
+              type="email"
+              value={
+                datos.correo
+              }
+              onChange={
+                actualizarCampo
+              }
+              required
+            />
 
-                <input
-                    type="email"
-                    id="contacto-correo"
-                    maxLength="100"
-                    required
-                />
+            <label
+              htmlFor="contacto-mensaje"
+            >
+              Mensaje
+            </label>
 
-                <label htmlFor="contacto-mensaje">
-                    Mensaje
-                </label>
+            <textarea
+              id="contacto-mensaje"
+              name="mensaje"
+              value={
+                datos.mensaje
+              }
+              onChange={
+                actualizarCampo
+              }
+              required
+            />
 
-                <textarea
-                    id="contacto-mensaje"
-                    maxLength="500"
-                    required
-                />
+            {enviado && (
+              <p className="success">
+                Mensaje enviado correctamente.
+              </p>
+            )}
 
-                <button type="submit">
-                    Enviar mensaje
-                </button>
+            <Button type="submit">
+              Enviar mensaje
+            </Button>
 
-            </form>
+          </form>
 
         </section>
-
-    </main>
-        </>
-    )
+      </main>
+    </>
+  )
 }
+
 export default Contacto

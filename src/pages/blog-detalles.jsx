@@ -1,42 +1,137 @@
-function BlogDetalles (){
-    return(
-        <>
-            <header>
+import {
+  Link,
+  useParams,
+} from 'react-router'
 
-        <div className="logo">
+const articulos = {
+  1: {
+    titulo:
+      'Herramientas esenciales para tener en casa',
 
-            <a href="/">
-                Ferretería Los Maestros
-            </a>
+    imagen:
+      '/img/blog/herramientas_img.jpg',
 
-        </div>
-        
-        <nav>
-            <a href="/">Inicio</a>
-            <a href="/productos">Productos</a>
-            <a href="/blogs">Blog</a>
-            <a href="/nosotros">Nosotros</a>
-            <a href="/contacto">Contacto</a>
-            <a href="/login">Iniciar sesión</a>
-            <a href="/carrito">
-                Carrito
-                <span id="contador-carrito">0</span>
-            </a>
-        </nav>
+    contenido: [
+      'Contar con herramientas básicas permite resolver pequeñas reparaciones en el hogar.',
 
-    </header>
+      'Un martillo, destornilladores, cinta métrica y alicates forman un buen kit inicial.',
 
+      'También es importante mantener las herramientas limpias y ordenadas.',
+    ],
+  },
 
-    <main>
+  2: {
+    titulo:
+      'Consejos para mejorar y cuidar tu hogar',
 
-        <section
-            id="blog-detalle"
-            className="formulario-container">
+    imagen:
+      '/img/blog/hogar_img.jpg',
 
-        </section>
+    contenido: [
+      'La mantención preventiva permite evitar reparaciones más costosas.',
 
-    </main>
-        </>
-    )
+      'Es recomendable revisar filtraciones, ventanas, tornillos y enchufes periódicamente.',
+
+      'Antes de realizar una reparación utiliza siempre los elementos de protección necesarios.',
+    ],
+  },
 }
+
+function BlogDetalles() {
+  const { id } =
+    useParams()
+
+  const articulo =
+    articulos[id]
+
+  return (
+    <>
+      <header>
+        <div className="logo">
+          <Link to="/">
+            Ferretería Los Maestros
+          </Link>
+        </div>
+
+        <nav>
+          <Link to="/">
+            Inicio
+          </Link>
+
+          <Link to="/productos">
+            Productos
+          </Link>
+
+          <Link to="/blogs">
+            Blog
+          </Link>
+
+          <Link to="/nosotros">
+            Nosotros
+          </Link>
+
+          <Link to="/contacto">
+            Contacto
+          </Link>
+        </nav>
+      </header>
+
+      <main>
+
+        {!articulo ? (
+          <section className="formulario-container">
+
+            <h1>
+              Artículo no encontrado
+            </h1>
+
+            <Link
+              className="btn"
+              to="/blogs"
+            >
+              Volver al blog
+            </Link>
+
+          </section>
+        ) : (
+          <article className="blog-detalle">
+
+            <img
+              src={
+                articulo.imagen
+              }
+              alt={
+                articulo.titulo
+              }
+            />
+
+            <h1>
+              {articulo.titulo}
+            </h1>
+
+            {articulo.contenido.map(
+              (parrafo, indice) => (
+                <p key={indice}>
+                  {parrafo}
+                </p>
+              )
+            )}
+
+            <br />
+
+            <Link
+              className="btn"
+              to="/blogs"
+            >
+              Volver al blog
+            </Link>
+
+          </article>
+        )}
+
+      </main>
+    </>
+  )
+}
+
 export default BlogDetalles
