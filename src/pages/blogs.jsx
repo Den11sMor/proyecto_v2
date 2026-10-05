@@ -1,65 +1,112 @@
+import { Link } from 'react-router'
+
+const articulos = [
+  {
+    id: 1,
+    titulo:
+      'Herramientas esenciales para tener en casa',
+    imagen:
+      '/img/blog/herramientas_img.jpg',
+    resumen:
+      'Conoce las herramientas básicas para realizar reparaciones en tu hogar.',
+  },
+  {
+    id: 2,
+    titulo:
+      'Consejos para mejorar y cuidar tu hogar',
+    imagen:
+      '/img/blog/hogar_img.jpg',
+    resumen:
+      'Ideas simples para mantener tu hogar en buenas condiciones.',
+  },
+]
+
 function Blogs() {
-    return (
-        <>
-            <header>
+  return (
+    <>
+      <header>
+        <div className="logo">
+          <Link to="/">
+            Ferretería Los Maestros
+          </Link>
+        </div>
 
-                <div className="logo">
-                    <a href="/">
-                        Ferretería Los Maestros
-                    </a>
-                </div>
+        <nav>
+          <Link to="/">
+            Inicio
+          </Link>
 
-                <nav>
-                    <a href="/">Inicio</a>
-                    <a href="/productos">Productos</a>
-                    <a href="/blogs">Blog</a>
-                    <a href="/nosotros">Nosotros</a>
-                    <a href="/contacto">Contacto</a>
+          <Link to="/productos">
+            Productos
+          </Link>
 
-                    <a href="/carrito">
-                        Carrito
-                        <span id="contador-carrito">0</span>
-                    </a>
-                </nav>
+          <Link to="/blogs">
+            Blog
+          </Link>
 
-            </header>
+          <Link to="/nosotros">
+            Nosotros
+          </Link>
 
-            <main>
+          <Link to="/contacto">
+            Contacto
+          </Link>
 
-                <h1>Blog</h1>
+          <Link to="/carrito">
+            Carrito
+          </Link>
+        </nav>
+      </header>
 
-                <section id="lista-blogs" className="blogs-grid">
+      <main>
 
-                    <article className="blog-card">
-                        <img
-                            src="/img/blog/herramientas_img.jpg"
-                            alt="Herramientas"
-                        />
+        <h1>Blog</h1>
 
-                        <h2>Herramientas</h2>
+        <section
+          id="lista-blogs"
+          className="blogs-grid"
+        >
 
-                        <a href="/blog/1">
-                            Ver artículo
-                        </a>
-                    </article>
+          {articulos.map(
+            (articulo) => (
+              <article
+                className="blog-card"
+                key={articulo.id}
+              >
+                <img
+                  src={
+                    articulo.imagen
+                  }
+                  alt={
+                    articulo.titulo
+                  }
+                />
 
-                    <article className="blog-card">
-                        <img
-                            src="/img/blog/hogar_img.jpg"
-                            alt="Hogar"
-                        />
+                <h2>
+                  {
+                    articulo.titulo
+                  }
+                </h2>
 
-                        <h2>Hogar</h2>
+                <p>
+                  {
+                    articulo.resumen
+                  }
+                </p>
 
-                        <a href="/blog/2">
-                            Ver artículo
-                        </a>
-                    </article>
+                <Link
+                  to={`/blog/${articulo.id}`}
+                >
+                  Ver artículo
+                </Link>
+              </article>
+            )
+          )}
 
-                </section>
-
-            </main>
-        </>
-    )
+        </section>
+      </main>
+    </>
+  )
 }
+
 export default Blogs

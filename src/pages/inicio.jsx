@@ -1,145 +1,146 @@
+import { Link } from 'react-router'
+
+const productosDestacados = [
+  {
+    id: 1,
+    nombre: 'Cinta',
+    imagen:
+      '/img/productos/cinta_img.jpg',
+  },
+  {
+    id: 2,
+    nombre: 'Destornillador',
+    imagen:
+      '/img/productos/destornillador_img.jpg',
+  },
+  {
+    id: 3,
+    nombre: 'Martillo',
+    imagen:
+      '/img/productos/martillo_img.jpg',
+  },
+  {
+    id: 4,
+    nombre: 'Taladro',
+    imagen:
+      '/img/productos/taladro_img.jpg',
+  },
+  {
+    id: 5,
+    nombre: 'Tornillos',
+    imagen:
+      '/img/productos/tornillos_img.jpg',
+  },
+]
+
 function Inicio() {
   return (
     <>
       <header>
-
         <div className="logo">
-
-          <a href="index.html">
+          <Link to="/">
             Ferretería Los Maestros
-          </a>
-
+          </Link>
         </div>
 
         <nav>
-
-          <a href="/">
+          <Link to="/">
             Inicio
-          </a>
+          </Link>
 
-          <a href="/productos">
+          <Link to="/productos">
             Productos
-          </a>
+          </Link>
 
-          <a href="/blogs">
+          <Link to="/blogs">
             Blog
-          </a>
+          </Link>
 
-          <a href="/nosotros">
+          <Link to="/nosotros">
             Nosotros
-          </a>
+          </Link>
 
-          <a href="/contacto">
+          <Link to="/contacto">
             Contacto
-          </a>
+          </Link>
 
-          <a href="/login">
+          <Link to="/login">
             Iniciar sesión
-          </a>
+          </Link>
 
-          <a href="/carrito">
+          <Link to="/carrito">
             Carrito
-            <span id="contador-carrito">0</span>
-          </a>
-
+          </Link>
         </nav>
-
       </header>
 
       <main>
-
         <section className="hero">
-
           <h1>
             Ferretería Los Maestros
           </h1>
 
           <p>
-            Herramientas y productos para tus proyectos.
+            Herramientas y productos
+            para tus proyectos.
           </p>
 
-          <a
+          <Link
             className="btn"
-            href="/productos">
+            to="/productos"
+          >
             Ver productos
-          </a>
-
+          </Link>
         </section>
 
         <section className="productos-destacados">
-          <h2>Productos destacados</h2>
+          <h2>
+            Productos destacados
+          </h2>
 
           <div className="productos-grid">
 
-            <div className="producto-card">
-              <img
-                src="/img/productos/cinta_img.jpg"
-                alt="Cinta"
-              />
-              <h3>Cinta</h3>
-              <a href="/producto/1">
-                Ver detalle
-              </a>
-            </div>
+            {productosDestacados.map(
+              (producto) => (
+                <article
+                  className="producto-card"
+                  key={producto.id}
+                >
+                  <img
+                    src={
+                      producto.imagen
+                    }
+                    alt={
+                      producto.nombre
+                    }
+                  />
 
-            <div className="producto-card">
-              <img
-                src="/img/productos/destornillador_img.jpg"
-                alt="Destornillador"
-              />
-              <h3>Destornillador</h3>
-              <a href="/producto/2">
-                Ver detalle
-              </a>
-            </div>
+                  <h3>
+                    {
+                      producto.nombre
+                    }
+                  </h3>
 
-            <div className="producto-card">
-              <img
-                src="/img/productos/martillo_img.jpg"
-                alt="Martillo"
-              />
-              <h3>Martillo</h3>
-              <a href="/producto/3">
-                Ver detalle
-              </a>
-            </div>
-
-            <div className="producto-card">
-              <img
-                src="/img/productos/taladro_img.jpg"
-                alt="Taladro"
-              />
-              <h3>Taladro</h3>
-              <a href="/producto/4">
-                Ver detalle
-              </a>
-            </div>
-
-            <div className="producto-card">
-              <img
-                src="/img/productos/tornillos_img.jpg"
-                alt="Tornillos"
-              />
-              <h3>Tornillos</h3>
-              <a href="/producto/5">
-                Ver detalle
-              </a>
-            </div>
+                  <Link
+                    to={`/producto/${producto.id}`}
+                  >
+                    Ver detalle
+                  </Link>
+                </article>
+              )
+            )}
 
           </div>
         </section>
-
       </main>
 
       <footer>
-
         <p>
           © 2026 Ferretería Los Maestros
         </p>
-
       </footer>
     </>
-
   )
 }
+
 export default Inicio
