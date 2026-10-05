@@ -1,6 +1,47 @@
+import { useState } from 'react'
 import './App.css'
 
+import Inicio from './pages/inicio'
+import Productos from './pages/productos'
+import ProductoDetalle from './pages/producto.detalle'
+import Carrito from './pages/carrito'
+import Blogs from './pages/blogs'
+import BlogDetalles from './pages/blog-detalles'
+import Contacto from './pages/contacto'
+import Nosotros from './pages/nosotros'
+import Login from './pages/login'
+import Registro from './pages/registro'
+
 function App() {
+
+  cosnt [pagina, setPagina] = useState('inicio')
+
+  const mostrarPagina = () => {
+    switch (pagina){
+
+      case "productos":
+        return <Productos />
+      case "productoDetalle":
+        return <ProductoDetalle />
+      case "carrito":
+        return <Carrito />
+      case "blogs":
+        return <Blogs />
+      case "blogDetalles":
+        return <BlogDetalles />
+      case "contacto":
+        return <Contacto />
+      case "nosotros":
+        return <Nosotros />
+      case "login":
+        return <Login />
+      case "registro":
+        return <Registro />
+      default:
+        return <Inicio />
+    }
+  }
+
   return (
     <>
       <header>
@@ -11,38 +52,66 @@ function App() {
             Ferretería Los Maestros
           </a>
 
+          <button 
+            type="button"
+            onClick={() => setPagina('Inicio')}
+          >
+            Inicio
+          </button>
+
         </div>
 
         <nav>
 
-          <a href="index.html">
+          <button 
+            type="button"
+            onClick={() => setPagina('Inicio')}
+          >
             Inicio
-          </a>
-
-          <a href="pages/productos.html">
+          </button>
+          
+          <button 
+            type="button"
+            onClick={() => setPagina('Productos')}
+          >
             Productos
-          </a>
+          </button>
 
-          <a href="pages/blogs.html">
-            Blog
-          </a>
+          <button 
+            type="button"
+            onClick={() => setPagina('Blogs')}
+          >
+            Blogs
+          </button>
 
-          <a href="pages/nosotros.html">
+          <button 
+            type="button"
+            onClick={() => setPagina('Nosotros')}
+          >
             Nosotros
-          </a>
+          </button>
 
-          <a href="pages/contacto.html">
+          <button 
+            type="button"
+            onClick={() => setPagina('Contacto')}
+          >
             Contacto
-          </a>
+          </button>
 
-          <a href="pages/login.html">
+          <button 
+            type="button"
+            onClick={() => setPagina('Login')}
+          >
             Iniciar sesión
-          </a>
+          </button>
 
-          <a href="pages/carrito.html">
+          <button 
+            type="button"
+            onClick={() => setPagina('Carrito')}
+          >
             Carrito
             <span id="contador-carrito">0</span>
-          </a>
+          </button>
 
         </nav>
 

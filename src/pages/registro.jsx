@@ -12,6 +12,7 @@ function Registro() {
           <h1>Crear cuenta</h1>
 
           <form id="form-registro">
+
             <label>RUN</label>
             <input
               id="run"
@@ -51,9 +52,27 @@ function Registro() {
               type="password"
             />
 
+            <label>Región</label>
+            <select id="region" required>
+              <option value="">Seleccione región</option>
+            </select>
+
+            <label>Comuna</label>
+            <select id="comuna" required>
+              <option value="">Seleccione comuna</option>
+            </select>
+
+            <label>Dirección</label>
+            <textarea
+              id="direccion"
+              maxLength="300"
+              required
+            ></textarea>
+
             <button type="submit">
               Registrarme
             </button>
+
           </form>
         </section>
       </main>
