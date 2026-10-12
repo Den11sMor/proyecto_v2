@@ -1,41 +1,84 @@
 import { useState } from 'react'
+import { Link, useParams } from 'react-router'
+import { obtenerProductoPorId } from '../services/productosService'
+import { agregarAlCarrito } from '../services/carritoService'
+
+// Formatea los precios en pesos chilenos.
+const formatoCLP = (precio) =>
+  Number(precio || 0).toLocaleString('es-CL', {
+    style: 'currency',
+    currency: 'CLP',
+    maximumFractionDigits: 0,
+  })
 
 function DetalleProducto() {
-  const codigo = localStorage.getItem('productoSelecionado')
+  const { id } = useParams()
+
+  // Busca el producto indicado por la URL.
+  const producto = obtenerProductoPorId(id)
 
   const [cantidad, setCantidad] = useState(1)
+  const [mensaje, setMensaje] = useState('')
+
+  // Agrega el producto seleccionado al carrito.
+  const manejarAgregar = () => {
+    if (!producto) return
+
+    const stock = Number(producto.stock) || 0
+
+    if (cantidad < 1 || !Number.isInteger(cantidad)) {
+      setMensaje('Ingresa una cantidad válida.')
+      return
+    }
+
+    if (cantidad > stock) {
+      setMensaje('No hay suficiente stock disponible.')
+      return
+    }
+
+    try {
+      agregarAlCarrito(producto, cantidad)
+      setMensaje('Producto agregado al carrito.')
+    } catch {
+      setMensaje('No se pudo agregar el producto.')
+    }
+  }
+
+  if (!producto) {
+    return (
+      <main className="pagina-detalle">
+        <section className="formulario-container">
+          <h1>Producto no encontrado</h1>
+
+          <Link className="btn" to="/productos">
+            Volver a productos
+          </Link>
+        </section>
+      </main>
+    )
+  }
 
   return (
-    <>
-      <header>
-        <div className="logo">
-          <a href="/">Ferretería Los Maestros</a>
-        </div>
+    <main className="pagina-detalle">
+      <section className="detalle-producto">
+        <img
+          src={producto.imagen || '/img/producto-sin-imagen.png'}
+          alt={producto.nombre}
+        />
 
-        <nav>
-          <a href="/">Inicio</a>
-          <a href="/productos">Productos</a>
-          <a href="/blogs">Blog</a>
-          <a href="/nosotros">Nosotros</a>
-          <a href="/contacto">Contacto</a>
-          <a href="/login">Iniciar sesión</a>
+        <div>
+          <h1>{producto.nombre}</h1>
 
-          <a href="/carrito">
-            Carrito
-            <span id="contador-carrito">0</span>
-          </a>
-        </nav>
-      </header>
+          <p>{producto.descripcion}</p>
 
-      <main>
-        <section
-          id="detalle-producto"
-          className="detalle-producto"
-        >
-          <h1>Detalle del producto</h1>
+          <p className="precio">
+            {formatoCLP(producto.precio)}
+          </p>
 
           <p>
-            Código del producto: {codigo || 'No seleccionado'}
+            {Number(producto.stock) > 0
+              ? `Stock disponible: ${producto.stock} unidades`
+              : 'Producto sin stock'}
           </p>
 
           <label htmlFor="cantidad">Cantidad</label>
@@ -44,19 +87,36 @@ function DetalleProducto() {
             id="cantidad"
             type="number"
             min="1"
+            max={Number(producto.stock) || 1}
             value={cantidad}
-            onChange={(e) => setCantidad(Number(e.target.value))}
+            onChange={(event) => {
+              setCantidad(Number(event.target.value))
+              setMensaje('')
+            }}
           />
 
-          <br />
-          <br />
+          <div className="producto-botones">
+            <button
+              type="button"
+              onClick={manejarAgregar}
+              disabled={Number(producto.stock) <= 0}
+            >
+              Agregar al carrito
+            </button>
 
-          <a className="btn" href="/productos">
-            Volver a productos
-          </a>
-        </section>
-      </main>
-    </>
+            <Link className="btn" to="/productos">
+              Volver a productos
+            </Link>
+          </div>
+
+          {mensaje && (
+            <p role="status" aria-live="polite">
+              {mensaje}
+            </p>
+          )}
+        </div>
+      </section>
+    </main>
   )
 }
 

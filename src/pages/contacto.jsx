@@ -1,45 +1,30 @@
 import { useState } from 'react'
-import { Link } from 'react-router'
-
 import Input from '../components/forms/Input'
 import Button from '../components/forms/Button'
 
 function Contacto() {
-  const [
-    datos,
-    setDatos,
-  ] = useState({
+  const [datos, setDatos] = useState({
     nombre: '',
     correo: '',
     mensaje: '',
   })
 
-  const [
-    enviado,
-    setEnviado,
-  ] = useState(false)
+  const [enviado, setEnviado] = useState(false)
 
-  const actualizarCampo = (
-    event
-  ) => {
-    const {
-      name,
-      value,
-    } = event.target
+  // Actualiza los campos del formulario.
+  const actualizarCampo = (event) => {
+    const { name, value } = event.target
 
-    setDatos(
-      (anterior) => ({
-        ...anterior,
-        [name]: value,
-      })
-    )
+    setDatos((anterior) => ({
+      ...anterior,
+      [name]: value,
+    }))
 
     setEnviado(false)
   }
 
-  const enviar = (
-    event
-  ) => {
+  // Simula el envío del mensaje.
+  const enviar = (event) => {
     event.preventDefault()
 
     setEnviado(true)
@@ -52,122 +37,54 @@ function Contacto() {
   }
 
   return (
-    <>
-      <header>
-        <div className="logo">
-          <Link to="/">
-            Ferretería Los Maestros
-          </Link>
-        </div>
+    <main className="pagina-contacto">
+      <section className="formulario-container">
+        <h1>Contáctanos</h1>
 
-        <nav>
-          <Link to="/">
-            Inicio
-          </Link>
+        <p>¿Tienes una consulta? Envíanos un mensaje.</p>
 
-          <Link to="/productos">
-            Productos
-          </Link>
+        <form onSubmit={enviar}>
+          <Input
+            label="Nombre"
+            id="contacto-nombre"
+            name="nombre"
+            value={datos.nombre}
+            onChange={actualizarCampo}
+            required
+          />
 
-          <Link to="/blogs">
-            Blog
-          </Link>
+          <Input
+            label="Correo"
+            id="contacto-correo"
+            name="correo"
+            type="email"
+            value={datos.correo}
+            onChange={actualizarCampo}
+            required
+          />
 
-          <Link to="/nosotros">
-            Nosotros
-          </Link>
+          <label htmlFor="contacto-mensaje">Mensaje</label>
 
-          <Link to="/contacto">
-            Contacto
-          </Link>
+          <textarea
+            id="contacto-mensaje"
+            name="mensaje"
+            value={datos.mensaje}
+            onChange={actualizarCampo}
+            required
+          />
 
-          <Link to="/login">
-            Iniciar sesión
-          </Link>
+          {enviado && (
+            <p className="success">
+              Mensaje enviado correctamente.
+            </p>
+          )}
 
-          <Link to="/carrito">
-            Carrito
-          </Link>
-        </nav>
-      </header>
-
-      <main>
-
-        <section className="formulario-container">
-
-          <h1>
-            Contáctanos
-          </h1>
-
-          <p>
-            ¿Tienes una consulta?
-            Envíanos un mensaje.
-          </p>
-
-          <form
-            onSubmit={enviar}
-          >
-
-            <Input
-              label="Nombre"
-              id="contacto-nombre"
-              name="nombre"
-              value={
-                datos.nombre
-              }
-              onChange={
-                actualizarCampo
-              }
-              required
-            />
-
-            <Input
-              label="Correo"
-              id="contacto-correo"
-              name="correo"
-              type="email"
-              value={
-                datos.correo
-              }
-              onChange={
-                actualizarCampo
-              }
-              required
-            />
-
-            <label
-              htmlFor="contacto-mensaje"
-            >
-              Mensaje
-            </label>
-
-            <textarea
-              id="contacto-mensaje"
-              name="mensaje"
-              value={
-                datos.mensaje
-              }
-              onChange={
-                actualizarCampo
-              }
-              required
-            />
-
-            {enviado && (
-              <p className="success">
-                Mensaje enviado correctamente.
-              </p>
-            )}
-
-            <Button type="submit">
-              Enviar mensaje
-            </Button>
-
-          </form>
-
-        </section>
-      </main>
-    </>
+          <Button type="submit">
+            Enviar mensaje
+          </Button>
+        </form>
+      </section>
+    </main>
   )
 }
 

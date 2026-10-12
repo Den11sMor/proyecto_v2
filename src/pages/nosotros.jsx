@@ -1,85 +1,39 @@
-import { Link } from 'react-router'
-
 function Nosotros() {
   return (
-    <>
-      <header>
-        <div className="logo">
-          <Link to="/">
-            Ferretería Los Maestros
-          </Link>
-        </div>
+    <main className="pagina-nosotros">
+      <h1 className="titulo-pagina">Nosotros</h1>
 
-        <nav>
-          <Link to="/">
-            Inicio
-          </Link>
+      <section className="formulario-container">
+        <h2>Ferretería Los Maestros</h2>
 
-          <Link to="/productos">
-            Productos
-          </Link>
+        <p>
+          Somos una ferretería orientada a entregar productos y
+          soluciones para proyectos de construcción, reparación
+          y mejoramiento del hogar.
+        </p>
 
-          <Link to="/blogs">
-            Blog
-          </Link>
+        <h3>Misión</h3>
 
-          <Link to="/contacto">
-            Contacto
-          </Link>
-        </nav>
-      </header>
+        <p>
+          Entregar productos de calidad y una atención cercana
+          y confiable a nuestros clientes.
+        </p>
 
-      <main>
-        <h1>Nosotros</h1>
+        <h3>Visión</h3>
 
-        <section className="formulario-container">
+        <p>
+          Ser una ferretería reconocida por su servicio,
+          variedad y confianza.
+        </p>
 
-          <h2>
-            Ferretería Los Maestros
-          </h2>
+        <h3>Nuestro compromiso</h3>
 
-          <p>
-            Somos una ferretería
-            orientada a entregar
-            productos y soluciones
-            para proyectos de
-            construcción, reparación
-            y mejoramiento del hogar.
-          </p>
-
-          <h3>Misión</h3>
-
-          <p>
-            Entregar productos de
-            calidad y una atención
-            cercana y confiable a
-            nuestros clientes.
-          </p>
-
-          <h3>Visión</h3>
-
-          <p>
-            Ser una ferretería
-            reconocida por su
-            servicio, variedad y
-            confianza.
-          </p>
-
-          <h3>
-            Nuestro compromiso
-          </h3>
-
-          <p>
-            Ayudar a nuestros
-            clientes a encontrar las
-            herramientas y materiales
-            necesarios para realizar
-            sus proyectos.
-          </p>
-
-        </section>
-      </main>
-    </>
+        <p>
+          Ayudar a nuestros clientes a encontrar las herramientas
+          y materiales necesarios para realizar sus proyectos.
+        </p>
+      </section>
+    </main>
   )
 }
 

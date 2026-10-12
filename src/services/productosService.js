@@ -1,6 +1,7 @@
 import { STORAGE_KEYS } from '../utils/constants'
 import { getStorageItem, setStorageItem } from '../utils/storage'
 
+// Productos iniciales de la tienda.
 const PRODUCTOS_INICIALES = [
   {
     id: '1',
@@ -49,6 +50,7 @@ const PRODUCTOS_INICIALES = [
   },
 ]
 
+// Lee los productos guardados o inicializa el catálogo.
 const leerProductos = () => {
   const productos = getStorageItem(STORAGE_KEYS.PRODUCTS, null)
 
@@ -60,11 +62,13 @@ const leerProductos = () => {
   return productos
 }
 
+// Guarda la lista actualizada.
 const guardarProductos = (productos) => {
   setStorageItem(STORAGE_KEYS.PRODUCTS, productos)
   return productos
 }
 
+// Genera identificadores únicos.
 const crearId = () => {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
     return crypto.randomUUID()
@@ -73,6 +77,7 @@ const crearId = () => {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
 
+// Normaliza los datos antes de guardarlos.
 const normalizarProducto = (producto) => ({
   ...producto,
   nombre: producto.nombre?.trim(),
@@ -83,11 +88,13 @@ const normalizarProducto = (producto) => ({
   stock: Number(producto.stock),
 })
 
+// Consultas del catálogo.
 export const obtenerProductos = () => leerProductos()
 
 export const obtenerProductoPorId = (id) =>
   leerProductos().find((producto) => String(producto.id) === String(id)) || null
 
+// Crea un producto nuevo.
 export const crearProducto = (datos) => {
   const productos = leerProductos()
   const nuevoProducto = {
@@ -99,6 +106,7 @@ export const crearProducto = (datos) => {
   return nuevoProducto
 }
 
+// Actualiza un producto existente sin perder los campos omitidos.
 export const actualizarProducto = (id, cambios) => {
   const productos = leerProductos()
   const indice = productos.findIndex(
@@ -110,8 +118,10 @@ export const actualizarProducto = (id, cambios) => {
   }
 
   productos[indice] = {
-    ...productos[indice],
-    ...normalizarProducto(cambios),
+    ...normalizarProducto({
+      ...productos[indice],
+      ...cambios,
+    }),
     id: productos[indice].id,
   }
 
@@ -119,6 +129,7 @@ export const actualizarProducto = (id, cambios) => {
   return productos[indice]
 }
 
+// Elimina un producto del catálogo.
 export const eliminarProducto = (id) => {
   const productos = leerProductos().filter(
     (producto) => String(producto.id) !== String(id),
@@ -127,6 +138,7 @@ export const eliminarProducto = (id) => {
   return guardarProductos(productos)
 }
 
+// Exporta las operaciones del servicio.
 export default {
   obtenerProductos,
   obtenerProductoPorId,
