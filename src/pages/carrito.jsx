@@ -1,62 +1,102 @@
-function Carrito(){
-    return(
-        <>
-            <header>
+import { useState } from 'react'
+import { Link } from 'react-router'
 
-        <div className="logo">
-            <a href="/">
-                Ferretería Los Maestros
-            </a>
-        </div>
+// Página del carrito de compras.
+function Carrito() {
+  // Estado provisional para controlar el carrito en esta página.
+  const [productos] = useState([])
 
-        <nav>
-            <a href="/">Inicio</a>
-            <a href="/productos">Productos</a>
-            <a href="/blogs">Blog</a>
-            <a href="/nosotros">Nosotros</a>
-            <a href="/contacto">Contacto</a>
+  // Calcula el subtotal usando el precio y la cantidad de cada producto.
+  const subtotal = productos.reduce((acumulado, producto) => {
+    const precio = Number(producto.precio) || 0
+    const cantidad = Number(producto.cantidad) || 0
 
-            <a href="/carrito">
-                Carrito
-                <span id="contador-carrito">0</span>
-            </a>
-        </nav>
+    return acumulado + precio * cantidad
+  }, 0)
 
-    </header>
+  // Calcula el IVA incluido como referencia para el resumen.
+  const iva = Math.round(subtotal * 0.19)
+  const total = subtotal + iva
 
-    <main>
+  // Formatea los valores como pesos chilenos.
+  const formatoCLP = (valor) =>
+    valor.toLocaleString('es-CL', {
+      style: 'currency',
+      currency: 'CLP',
+      maximumFractionDigits: 0,
+    })
 
-        <h1>Carrito de compras</h1>
+  // Ejecuta una simulación de compra si hay productos.
+  function comprar() {
+    if (productos.length === 0) {
+      alert('Tu carrito está vacío.')
+      return
+    }
 
-        <section id="lista-carrito"></section>
+    alert('Compra simulada correctamente.')
+  }
 
-        <section className="totales">
+  return (
+    <>
+      {/* Encabezado de la página del carrito. */}
+      <main className="pagina-carrito">
+        <h1 className="titulo-pagina">Carrito de compras</h1>
 
-            <p>
-                Subtotal:
-                <strong id="subtotal">$0</strong>
+        {/* Enlace para volver a revisar los productos. */}
+        <p>
+          <Link to="/productos">Seguir comprando</Link>
+        </p>
+
+        {/* Lista de productos agregados. */}
+        <section className="lista-carrito">
+          {productos.length === 0 ? (
+            <p className="productos-mensaje-vacio">
+              Tu carrito está vacío.
             </p>
+          ) : (
+            productos.map((producto) => (
+              <article
+                className="item-carrito"
+                key={producto.id}
+              >
+                <img
+                  src={producto.imagen || '/img/producto-sin-imagen.png'}
+                  alt={producto.nombre || 'Producto'}
+                />
 
-            <p>
-                IVA:
-                <strong id="iva">$0</strong>
-            </p>
-
-            <p>
-                Total:
-                <strong id="total">$0</strong>
-            </p>
-
-            <button
-                type="button"
-                onClick={() => alert('Compra simulada correctamente.')}>
-                Comprar
-            </button>
-
+                <div>
+                  <h2>{producto.nombre || 'Producto sin nombre'}</h2>
+                  <p>Precio: {formatoCLP(Number(producto.precio) || 0)}</p>
+                  <p>Cantidad: {producto.cantidad}</p>
+                </div>
+              </article>
+            ))
+          )}
         </section>
 
-    </main>
-        </>
-    )
+        {/* Resumen de la compra. */}
+        <section className="totales">
+          <h2>Resumen de compra</h2>
+
+          <p>
+            Subtotal: <strong>{formatoCLP(subtotal)}</strong>
+          </p>
+
+          <p>
+            IVA (19%): <strong>{formatoCLP(iva)}</strong>
+          </p>
+
+          <p>
+            Total: <strong>{formatoCLP(total)}</strong>
+          </p>
+
+          <button type="button" onClick={comprar}>
+            Comprar
+          </button>
+        </section>
+      </main>
+    </>
+  )
 }
+
 export default Carrito

@@ -1,12 +1,12 @@
-// Centraliza las claves compartidas por los servicios.
+ // Claves compartidas para el almacenamiento local.
 export const STORAGE_KEYS = {
   PRODUCTS: 'ferreteria_productos',
   USERS: 'ferreteria_usuarios',
   CART: 'ferreteria_carrito',
   SESSION: 'ferreteria_sesion',
-};
+}
 
-// Evita repetir rutas en distintos componentes.
+// Rutas principales de la aplicación.
 export const ROUTES = {
   HOME: '/',
   PRODUCTS: '/productos',
@@ -19,8 +19,8 @@ export const ROUTES = {
   LOGIN: '/login',
   REGISTER: '/registro',
   ADMIN: '/admin',
-};
+}
 
-// Valores compartidos para cálculos comerciales.
-export const IVA = 0.19;
-export const CURRENCY = 'CLP';
+// Configuración comercial.
+export const IVA = 0.19
+export const CURRENCY = 'CLP'

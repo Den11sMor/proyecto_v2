@@ -1,6 +1,6 @@
-import { ROUTES } from './constants';
+import { ROUTES } from './constants'
 
-// Mantiene las rutas y sus parámetros en un solo lugar.
+// Centraliza las rutas de la aplicación.
 const APP_ROUTES = {
   HOME: ROUTES.HOME,
   PRODUCTS: ROUTES.PRODUCTS,
@@ -12,13 +12,13 @@ const APP_ROUTES = {
   REGISTER: ROUTES.REGISTER,
   ADMIN: ROUTES.ADMIN,
 
-  // Construye una URL para consultar un producto concreto.
+  // Genera la ruta del detalle de un producto.
   productDetail: (id) =>
     `${ROUTES.PRODUCT_DETAIL}/${encodeURIComponent(String(id))}`,
 
-  // Construye una URL para consultar un artículo concreto.
+  // Genera la ruta del detalle de un artículo.
   blogDetail: (id) =>
     `${ROUTES.BLOG_DETAIL}/${encodeURIComponent(String(id))}`,
-};
+}
 
-export default APP_ROUTES;
+export default APP_ROUTES
