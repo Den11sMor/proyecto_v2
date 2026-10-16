@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import Input from '../components/forms/Input'
 import Button from '../components/forms/Button'
+import { setStorageItem, getStorageItem } from '../utils/storage'
+import { validarCorreo } from '../utils/validations'
 
 function Contacto() {
   const [datos, setDatos] = useState({
@@ -10,6 +12,7 @@ function Contacto() {
   })
 
   const [enviado, setEnviado] = useState(false)
+  const [error, setError] = useState('')
 
   // Actualiza los campos del formulario.
   const actualizarCampo = (event) => {
@@ -23,10 +26,20 @@ function Contacto() {
     setEnviado(false)
   }
 
-  // Simula el envío del mensaje.
+  // Valida y guarda la consulta con fecha en este navegador; no envía correo a un servidor.
   const enviar = (event) => {
     event.preventDefault()
 
+    setError('')
+    if (!datos.nombre.trim() || datos.nombre.trim().length > 100 || !validarCorreo(datos.correo) || !datos.mensaje.trim() || datos.mensaje.trim().length > 500) {
+      setError('Revisa el nombre (máximo 100), el correo permitido y el mensaje (máximo 500 caracteres).')
+      return
+    }
+    const anteriores = getStorageItem('ferreteria_contactos', [])
+    if (!setStorageItem('ferreteria_contactos', [...(Array.isArray(anteriores) ? anteriores : []), { ...datos, fecha: new Date().toISOString() }])) {
+      setError('No se pudo guardar la consulta. Intenta nuevamente.')
+      return
+    }
     setEnviado(true)
 
     setDatos({
@@ -41,13 +54,14 @@ function Contacto() {
       <section className="formulario-container">
         <h1>Contáctanos</h1>
 
-        <p>¿Tienes una consulta? Envíanos un mensaje.</p>
+        <p>Registra tu consulta en este navegador. Este prototipo no envía correos a la tienda.</p>
 
         <form onSubmit={enviar}>
           <Input
             label="Nombre"
             id="contacto-nombre"
             name="nombre"
+            maxLength={100}
             value={datos.nombre}
             onChange={actualizarCampo}
             required
@@ -57,6 +71,7 @@ function Contacto() {
             label="Correo"
             id="contacto-correo"
             name="correo"
+            maxLength={100}
             type="email"
             value={datos.correo}
             onChange={actualizarCampo}
@@ -68,6 +83,7 @@ function Contacto() {
           <textarea
             id="contacto-mensaje"
             name="mensaje"
+            maxLength={500}
             value={datos.mensaje}
             onChange={actualizarCampo}
             required
@@ -75,12 +91,13 @@ function Contacto() {
 
           {enviado && (
             <p className="success">
-              Mensaje enviado correctamente.
+              Consulta guardada en este navegador.
             </p>
           )}
 
+          {error && <p role="alert" className="error">{error}</p>}
           <Button type="submit">
-            Enviar mensaje
+            Guardar consulta
           </Button>
         </form>
       </section>
