@@ -1,6 +1,11 @@
-import { Link, Outlet } from 'react-router';
+import { Link, Navigate, Outlet } from 'react-router';
+import useAuth from '../../hooks/useAuth';
 
 function AdminLayout() {
+  // Antes de mostrar las rutas internas, exige una sesión válida y el rol admin.
+  const { autenticado, esAdministrador, cerrarSesion } = useAuth();
+  if (!autenticado) return <Navigate to="/login" replace />;
+  if (!esAdministrador) return <section className="formulario-container"><h1>Acceso denegado</h1><p>No tienes permisos de administración.</p><Link to="/">Volver a la tienda</Link></section>;
   return (
     <div className="admin-layout">
       <header className="admin-header">
@@ -9,6 +14,7 @@ function AdminLayout() {
         </Link>
 
         <Link to="/">Volver a la tienda</Link>
+        <button onClick={cerrarSesion}>Cerrar sesión</button>
       </header>
 
       <div className="admin-body">

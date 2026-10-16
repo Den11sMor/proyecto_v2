@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import {
   actualizarProducto,
@@ -29,25 +29,13 @@ function ProductoForm() {
   const navigate = useNavigate()
   const editando = Boolean(id)
 
-  const [formulario, setFormulario] = useState(productoInicial)
+  const [formulario, setFormulario] = useState(() => id ? (obtenerProductoPorId(id) || productoInicial) : productoInicial)
   const [errores, setErrores] = useState({})
   const [errorGeneral, setErrorGeneral] = useState('')
 
-  useEffect(() => {
-    if (!editando) {
-      return
-    }
+  if (editando && !obtenerProductoPorId(id)) return <section><h1>Producto no encontrado</h1><Link to="/admin/productos">Volver</Link></section>
 
-    const producto = obtenerProductoPorId(id)
-
-    if (!producto) {
-      setErrorGeneral('Producto no encontrado.')
-      return
-    }
-
-    setFormulario(producto)
-  }, [editando, id])
-
+  // Copia el formulario anterior y reemplaza únicamente el campo modificado.
   const actualizarCampo = (event) => {
     const { name, value } = event.target
     setFormulario((anterior) => ({
@@ -56,6 +44,7 @@ function ProductoForm() {
     }))
   }
 
+  // Valida antes de guardar y usa el id de la ruta para decidir entre crear y actualizar.
   const guardar = (event) => {
     event.preventDefault()
     setErrorGeneral('')
@@ -110,7 +99,8 @@ function ProductoForm() {
           id="precio"
           name="precio"
           type="number"
-          min="1"
+          min="0"
+          step="any"
           value={formulario.precio}
           onChange={actualizarCampo}
         />

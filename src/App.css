@@ -376,3 +376,14 @@ textarea {
     color: #475569;
     text-decoration: underline;
 }
+
+/* Ajustes del panel para que las tablas se mantengan dentro de la pantalla. */
+.admin-layout { display: block; }
+.admin-body { display: flex; min-width: 0; }
+.admin-content { min-width: 0; width: 100%; margin: 0; }
+.admin-header { flex-wrap: wrap; }
+.admin-header a { color: white; }
+@media (max-width: 768px) {
+  .admin-body { flex-direction: column; }
+  .admin-content { padding: 16px; }
+}

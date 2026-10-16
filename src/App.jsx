@@ -48,8 +48,10 @@ function App() {
         <Route index element={<Admin />} />
         <Route path="productos" element={<ProductosAdmin />} />
         <Route path="productos/nuevo" element={<ProductoForm />} />
+        <Route path="productos/:id" element={<ProductoForm />} />
         <Route path="usuarios" element={<UsuariosAdmin />} />
         <Route path="usuarios/nuevo" element={<UsuarioForm />} />
+        <Route path="usuarios/:id" element={<UsuarioForm />} />
       </Route>
 
       {/* Redirige las rutas inexistentes al inicio. */}

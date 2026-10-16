@@ -48,6 +48,7 @@ function UsuariosAdmin() {
                 <td>{usuario.correo}</td>
                 <td>{usuario.rol || 'Cliente'}</td>
                 <td>
+                  <Link className="btn" to={`/admin/usuarios/${usuario.id}`}>Editar</Link>{' '}
                   <button
                     type="button"
                     onClick={() => eliminar(usuario.id)}
