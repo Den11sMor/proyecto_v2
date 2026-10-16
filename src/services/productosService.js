@@ -1,5 +1,6 @@
 import { STORAGE_KEYS } from '../utils/constants'
 import { getStorageItem, setStorageItem } from '../utils/storage'
+import { validarProducto } from '../utils/validations'
 
 // Productos iniciales de la tienda.
 const PRODUCTOS_INICIALES = [
@@ -64,7 +65,7 @@ const leerProductos = () => {
 
 // Guarda la lista actualizada.
 const guardarProductos = (productos) => {
-  setStorageItem(STORAGE_KEYS.PRODUCTS, productos)
+  if (!setStorageItem(STORAGE_KEYS.PRODUCTS, productos)) throw new Error('No se pudo guardar el catálogo.')
   return productos
 }
 
@@ -77,7 +78,7 @@ const crearId = () => {
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`
 }
 
-// Normaliza los datos antes de guardarlos.
+// Quita espacios sobrantes y convierte precio/stock de texto a número para poder calcular.
 const normalizarProducto = (producto) => ({
   ...producto,
   nombre: producto.nombre?.trim(),
@@ -96,10 +97,12 @@ export const obtenerProductoPorId = (id) =>
 
 // Crea un producto nuevo.
 export const crearProducto = (datos) => {
+  const errores = validarProducto(datos)
+  if (Object.keys(errores).length) throw new Error(Object.values(errores)[0])
   const productos = leerProductos()
   const nuevoProducto = {
-    id: crearId(),
     ...normalizarProducto(datos),
+    id: crearId(),
   }
 
   guardarProductos([...productos, nuevoProducto])
@@ -117,10 +120,14 @@ export const actualizarProducto = (id, cambios) => {
     throw new Error('Producto no encontrado.')
   }
 
+  const definidos = Object.fromEntries(Object.entries(cambios).filter(([, valor]) => valor !== undefined))
+  // Combina el producto anterior con los cambios: editar el precio conserva imagen, stock e id.
+  const errores = validarProducto({ ...productos[indice], ...definidos })
+  if (Object.keys(errores).length) throw new Error(Object.values(errores)[0])
   productos[indice] = {
     ...normalizarProducto({
       ...productos[indice],
-      ...cambios,
+      ...definidos,
     }),
     id: productos[indice].id,
   }
