@@ -1,0 +1,247 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Users\\Luis Stiven\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+      "C:\\Users\\Luis Stiven\\Documents\\Codex\\2026-09-06\\mi\\work\\github-luisdev\\node_modules\\@playwright\\test\\cli.js",
+      "test"
+    ],
+    "configFile": "C:\\Users\\Luis Stiven\\Documents\\Codex\\2026-09-06\\mi\\work\\github-luisdev\\playwright.config.js",
+    "rootDir": "C:/Users/Luis Stiven/Documents/Codex/2026-09-06/mi/work/github-luisdev/e2e",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/Users/Luis Stiven/Documents/Codex/2026-09-06/mi/work/github-luisdev/evidencia/resultados",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "C:/Users/Luis Stiven/Documents/Codex/2026-09-06/mi/work/github-luisdev/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "filteredProjects": [
+      {
+        "grep": {},
+        "grepInvert": null,
+        "outputDir": "C:\\Users\\Luis Stiven\\Documents\\Codex\\2026-09-06\\mi\\work\\github-luisdev\\evidencia\\resultados",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "name": "",
+        "testDir": "C:\\Users\\Luis Stiven\\Documents\\Codex\\2026-09-06\\mi\\work\\github-luisdev\\e2e",
+        "snapshotDir": "C:\\Users\\Luis Stiven\\Documents\\Codex\\2026-09-06\\mi\\work\\github-luisdev\\e2e",
+        "testIgnore": [],
+        "testMatch": "**/*.@(spec|test).?(c|m)[jt]s?(x)",
+        "timeout": 45000,
+        "use": {
+          "baseURL": "http://127.0.0.1:5180",
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "screenshot": "on",
+          "trace": "retain-on-failure",
+          "channel": "msedge"
+        },
+        "dependencies": [],
+        "ignoreSnapshots": false,
+        "__projectId": ""
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "evidencia/reporte-navegador",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "evidencia/resultados-navegador.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "default",
+    "updateSourceMethod": "patch",
+    "version": "1.64.1",
+    "workers": 1,
+    "webServer": {
+      "command": "pnpm dev --host 127.0.0.1 --port 5180 --strictPort",
+      "url": "http://127.0.0.1:5180",
+      "reuseExistingServer": true
+    }
+  },
+  "suites": [
+    {
+      "title": "integrante2.spec.js",
+      "file": "integrante2.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "registro válido, duplicado, login inválido/válido, persistencia, permisos y cierre",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4674,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T23:09:27.048Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\Luis Stiven\\Documents\\Codex\\2026-09-06\\mi\\work\\github-luisdev\\evidencia\\resultados\\integrante2-registro-válid-e5aa6-sistencia-permisos-y-cierre\\test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f512c56f83ac73999f8d-927ddeb0c682ecb081ff",
+          "file": "integrante2.spec.js",
+          "line": 32,
+          "column": 1
+        },
+        {
+          "title": "administración: crear, editar y eliminar productos y usuarios; indicadores",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2921,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T23:09:33.039Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\Luis Stiven\\Documents\\Codex\\2026-09-06\\mi\\work\\github-luisdev\\evidencia\\resultados\\integrante2-administración-747f8-ctos-y-usuarios-indicadores\\test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f512c56f83ac73999f8d-9f7bab71b0647419f428",
+          "file": "integrante2.spec.js",
+          "line": 53,
+          "column": 1
+        },
+        {
+          "title": "contacto guarda la consulta; blogs, nosotros e imágenes funcionan",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 45000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4040,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-16T23:09:35.990Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\Luis Stiven\\Documents\\Codex\\2026-09-06\\mi\\work\\github-luisdev\\evidencia\\resultados\\integrante2-contacto-guard-c27c1-sotros-e-imágenes-funcionan\\test-finished-1.png"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f512c56f83ac73999f8d-e86fbd95600460a05470",
+          "file": "integrante2.spec.js",
+          "line": 87,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-16T23:09:24.247Z",
+    "duration": 16579.879,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
