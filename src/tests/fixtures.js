@@ -1,0 +1,2 @@
+export const producto = { nombre: 'Llave inglesa', categoria: 'Herramientas', descripcion: 'Llave ajustable.', precio: 10000, stock: 5, imagen: '/img/productos/martillo_img.jpg' }
+export const usuario = { nombre: 'Ana', apellidos: 'Pérez', correo: 'ana@gmail.com', password: 'Clave123', rol: 'cliente', run: '123456785', region: 'Valparaíso', comuna: 'Viña del Mar', direccion: 'Calle de prueba 123' }
