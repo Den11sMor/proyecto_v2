@@ -1,30 +1,12 @@
-import { useCallback, useState } from 'react';
-import {
-  obtenerSesion,
-  cerrarSesion as cerrarSesionService,
-} from '../services/authService';
+import useStoredValue from './useStoredValue'
+import { STORAGE_KEYS } from '../utils/constants'
+import { obtenerSesion, guardarSesion, cerrarSesion } from '../services/authService'
 
-function useAuth() {
-  const [usuario, setUsuario] = useState(() => obtenerSesion());
-
-  // Actualiza el estado React después de iniciar sesión.
-  const actualizarUsuario = useCallback((nuevoUsuario) => {
-    setUsuario(nuevoUsuario);
-  }, []);
-
-  // Elimina la sesión y actualiza la interfaz.
-  const cerrarSesion = useCallback(() => {
-    cerrarSesionService();
-    setUsuario(null);
-  }, []);
-
-  return {
-    usuario,
-    autenticado: Boolean(usuario),
-    esAdministrador: usuario?.rol === 'admin',
-    actualizarUsuario,
-    cerrarSesion,
-  };
+// Comparte la lectura de sesión y permisos entre la barra de navegación y el panel.
+export default function useAuth() {
+  // Escuchar también usuarios permite retirar acceso si una cuenta se elimina o desactiva.
+  useStoredValue(STORAGE_KEYS.SESSION)
+  useStoredValue(STORAGE_KEYS.USERS)
+  const usuario = obtenerSesion()
+  return { usuario, autenticado: Boolean(usuario), esAdministrador: usuario?.rol === 'admin', actualizarUsuario: guardarSesion, cerrarSesion }
 }
-
-export default useAuth;

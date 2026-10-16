@@ -10,10 +10,11 @@ export function getStorageItem(key, defaultValue = null) {
   }
 }
 
-// Guarda objetos y arreglos en formato JSON.
+// Convierte objetos a JSON para guardarlos y avisa a React mediante un evento propio.
 export function setStorageItem(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value))
+    window.dispatchEvent(new CustomEvent('ferreteria:storage', { detail: { key } }))
     return true
   } catch (error) {
     console.error(`No se pudo guardar ${key}:`, error)
@@ -25,6 +26,7 @@ export function setStorageItem(key, value) {
 export function removeStorageItem(key) {
   try {
     localStorage.removeItem(key)
+    window.dispatchEvent(new CustomEvent('ferreteria:storage', { detail: { key } }))
     return true
   } catch (error) {
     console.error(`No se pudo eliminar ${key}:`, error)
