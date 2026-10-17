@@ -1,4 +1,8 @@
 import { NavLink } from 'react-router'
+import useStoredValue from '../../hooks/useStoredValue'
+import useAuth from '../../hooks/useAuth'
+import { STORAGE_KEYS } from '../../utils/constants'
+import { obtenerCantidadCarrito } from '../../services/carritoService'
 
 // Enlaces principales de navegación.
 const enlaces = [
@@ -11,8 +15,10 @@ const enlaces = [
 
 // Barra de navegación de la tienda.
 function Navbar() {
-  // Contador provisional: después se conectará al carrito real.
-  const cantidadCarrito = 0
+  // Escucha el carrito para refrescar el contador sin recargar la página.
+  useStoredValue(STORAGE_KEYS.CART)
+  const cantidadCarrito = obtenerCantidadCarrito()
+  const { usuario, esAdministrador, cerrarSesion } = useAuth()
 
   return (
     <nav className="main-nav" aria-label="Navegación principal">
@@ -37,8 +43,11 @@ function Navbar() {
           isActive ? 'nav-link active' : 'nav-link'
         }
       >
-        Mi cuenta
+        {usuario ? usuario.nombre : 'Mi cuenta'}
       </NavLink>
+
+      {esAdministrador && <NavLink className="nav-link" to="/admin">Administración</NavLink>}
+      {usuario && <button type="button" onClick={cerrarSesion}>Cerrar sesión</button>}
 
       {/* El espacio entre el nombre y el contador se controla con CSS. */}
       <NavLink

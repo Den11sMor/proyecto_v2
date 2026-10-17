@@ -16,7 +16,7 @@ describe('Productos', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('Productos')).toBeTruthy()
+    expect(screen.getByText('Nuestros productos')).toBeTruthy()
     expect(screen.getByText('Martillo')).toBeTruthy()
   })
 
@@ -27,7 +27,7 @@ describe('Productos', () => {
       </MemoryRouter>,
     )
 
-    fireEvent.change(screen.getByLabelText('Buscar producto'), {
+    fireEvent.change(screen.getByLabelText('Buscar productos por nombre o categoría'), {
       target: { value: 'Taladro' },
     })
 

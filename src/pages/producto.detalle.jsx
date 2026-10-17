@@ -20,7 +20,7 @@ function DetalleProducto() {
   const [cantidad, setCantidad] = useState(1)
   const [mensaje, setMensaje] = useState('')
 
-  // Agrega el producto seleccionado al carrito.
+  // Revisa la cantidad del formulario; el servicio comprueba además las unidades ya agregadas.
   const manejarAgregar = () => {
     if (!producto) return
 
@@ -39,8 +39,8 @@ function DetalleProducto() {
     try {
       agregarAlCarrito(producto, cantidad)
       setMensaje('Producto agregado al carrito.')
-    } catch {
-      setMensaje('No se pudo agregar el producto.')
+    } catch (error) {
+      setMensaje(error.message)
     }
   }
 
@@ -62,7 +62,8 @@ function DetalleProducto() {
     <main className="pagina-detalle">
       <section className="detalle-producto">
         <img
-          src={producto.imagen || '/img/producto-sin-imagen.png'}
+          src={producto.imagen || '/img/productos/martillo_img.jpg'}
+          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/img/productos/martillo_img.jpg' }}
           alt={producto.nombre}
         />
 

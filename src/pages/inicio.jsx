@@ -1,35 +1,8 @@
 import { Link } from 'react-router'
-
-// Productos destacados de la portada.
-const productosDestacados = [
-  {
-    id: 1,
-    nombre: 'Cinta aisladora',
-    imagen: '/img/productos/cinta_img.jpg',
-  },
-  {
-    id: 2,
-    nombre: 'Destornillador',
-    imagen: '/img/productos/destornillador_img.jpg',
-  },
-  {
-    id: 3,
-    nombre: 'Martillo',
-    imagen: '/img/productos/martillo_img.jpg',
-  },
-  {
-    id: 4,
-    nombre: 'Taladro eléctrico',
-    imagen: '/img/productos/taladro_img.jpg',
-  },
-  {
-    id: 5,
-    nombre: 'Caja de tornillos',
-    imagen: '/img/productos/tornillos_img.jpg',
-  },
-]
+import { obtenerProductos } from '../services/productosService'
 
 function Inicio() {
+  const destacados = obtenerProductos().slice(0, 5)
   return (
     <main className="pagina-inicio">
       {/* Presentación principal de la ferretería. */}
@@ -48,7 +21,7 @@ function Inicio() {
         <h2 className="titulo-pagina">Productos destacados</h2>
 
         <div className="productos-grid">
-          {productosDestacados.map((producto) => (
+          {destacados.map((producto) => (
             <article className="producto-card" key={producto.id}>
               <img
                 src={producto.imagen}

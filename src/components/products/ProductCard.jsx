@@ -27,7 +27,8 @@ function ProductCard({ producto }) {
         {/* Imagen con tamaño uniforme controlado por CSS. */}
         <div className="product-card-image">
           <img
-            src={producto.imagen || '/img/producto-sin-imagen.png'}
+            src={producto.imagen || '/img/productos/martillo_img.jpg'}
+            onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/img/productos/martillo_img.jpg' }}
             alt={producto.nombre || 'Imagen del producto'}
             loading="lazy"
           />

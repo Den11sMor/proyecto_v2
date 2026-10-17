@@ -2,117 +2,119 @@ import { STORAGE_KEYS } from '../utils/constants'
 import { getStorageItem, setStorageItem } from '../utils/storage'
 import { obtenerProductoPorId } from './productosService'
 
-export const EVENTO_CARRITO_ACTUALIZADO = 'carrito:actualizado'
+// Convierte el valor del formulario y rechaza ceros, negativos y cantidades fraccionarias.
+const cantidadValida = (valor) => {
+  const cantidad = Number(valor)
+  if (!Number.isInteger(cantidad) || cantidad < 1) {
+    throw new Error('La cantidad debe ser un entero mayor que cero.')
+  }
+  return cantidad
+}
 
-function notificarCambioCarrito() {
-  if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent(EVENTO_CARRITO_ACTUALIZADO))
+// Comprueba la cantidad solicitada contra las existencias del catálogo actual.
+const validarStock = (producto, cantidad) => {
+  if (!producto || cantidad > Number(producto.stock)) {
+    throw new Error('No hay suficiente stock disponible.')
   }
 }
 
-// Lee el carrito persistido. Un valor corrupto se trata como carrito vacío.
+// Lee el carrito guardado.
 export const obtenerCarrito = () => {
   const carrito = getStorageItem(STORAGE_KEYS.CART, [])
   return Array.isArray(carrito) ? carrito : []
 }
 
+// Guarda los cambios del carrito.
 const guardarCarrito = (carrito) => {
-  if (!setStorageItem(STORAGE_KEYS.CART, carrito)) {
-    throw new Error('No se pudo guardar el carrito.')
-  }
-  notificarCambioCarrito()
+  if (!setStorageItem(STORAGE_KEYS.CART, carrito)) throw new Error('No se pudo guardar el carrito.')
   return carrito
 }
 
-const cantidadValida = (cantidad) =>
-  Number.isInteger(Number(cantidad)) && Number(cantidad) >= 1
-
-function validarStock(producto, cantidadSolicitada) {
-  const productoCatalogo = obtenerProductoPorId(producto.id)
-  const referencia = productoCatalogo || producto
-  const stock = Number(referencia.stock)
-
-  if (Number.isFinite(stock) && stock >= 0 && cantidadSolicitada > stock) {
-    throw new Error(`Stock insuficiente. Solo quedan ${stock} unidades de ${referencia.nombre || 'este producto'}.`)
-  }
-
-  return referencia
-}
-
-// Agrega un producto nuevo o suma unidades a uno que ya está en el carrito.
+// Agrega un producto o aumenta su cantidad.
 export const agregarAlCarrito = (producto, cantidad = 1) => {
   if (!producto?.id) {
     throw new Error('El producto no es válido.')
   }
-  if (!cantidadValida(cantidad)) {
-    throw new Error('La cantidad debe ser un entero mayor que cero.')
-  }
 
+  const actual = obtenerProductoPorId(producto.id)
   const carrito = obtenerCarrito()
-  const cantidadAgregar = Number(cantidad)
-  const existente = carrito.find((item) => String(item.id) === String(producto.id))
-  const cantidadFinal = (Number(existente?.cantidad) || 0) + cantidadAgregar
-  const referencia = validarStock(producto, cantidadFinal)
+  const cantidadAgregar = cantidadValida(cantidad)
+  const existente = carrito.find(
+    (item) => String(item.id) === String(producto.id),
+  )
 
-  const datosProducto = {
-    ...(existente || {}),
-    ...referencia,
-    cantidad: cantidadFinal,
+  let nuevoCarrito
+  // Cuenta también lo que ya estaba agregado para no superar el stock con varios clics.
+  validarStock(actual, cantidadAgregar + (existente?.cantidad || 0))
+
+  if (existente) {
+    nuevoCarrito = carrito.map((item) =>
+      String(item.id) === String(producto.id)
+        ? { ...item, cantidad: (Number(item.cantidad) || 1) + cantidadAgregar }
+        : item,
+    )
+  } else {
+    nuevoCarrito = [
+      ...carrito,
+      { ...actual, cantidad: cantidadAgregar },
+    ]
   }
-
-  const nuevoCarrito = existente
-    ? carrito.map((item) => String(item.id) === String(producto.id) ? datosProducto : item)
-    : [...carrito, datosProducto]
 
   return guardarCarrito(nuevoCarrito)
 }
 
-// Actualiza la cantidad respetando el stock actual del catálogo.
+// Cambia la cantidad de un producto.
 export const actualizarCantidadCarrito = (id, cantidad) => {
-  if (!cantidadValida(cantidad)) {
+  const nuevaCantidad = Number(cantidad)
+
+  if (!Number.isInteger(nuevaCantidad) || nuevaCantidad < 1) {
     throw new Error('La cantidad debe ser un entero mayor que cero.')
   }
 
-  const carrito = obtenerCarrito()
-  const existente = carrito.find((item) => String(item.id) === String(id))
-  if (!existente) throw new Error('El producto no está en el carrito.')
+  if (!obtenerCarrito().some((item) => String(item.id) === String(id))) throw new Error('Producto no encontrado en el carrito.')
+  validarStock(obtenerProductoPorId(id), nuevaCantidad)
 
-  const referencia = validarStock(existente, Number(cantidad))
-  const actualizado = { ...existente, ...referencia, cantidad: Number(cantidad) }
-
-  return guardarCarrito(carrito.map((item) =>
-    String(item.id) === String(id) ? actualizado : item,
-  ))
-}
-
-export const eliminarDelCarrito = (id) =>
-  guardarCarrito(obtenerCarrito().filter((item) => String(item.id) !== String(id)))
-
-export const vaciarCarrito = () => guardarCarrito([])
-
-// Cuenta unidades, no líneas distintas, para el contador de navegación.
-export const obtenerCantidadCarrito = () =>
-  obtenerCarrito().reduce((total, item) => total + (Number(item.cantidad) || 0), 0)
-
-export const obtenerSubtotalCarrito = () =>
-  obtenerCarrito().reduce((total, item) =>
-    total + (Number(item.precio) || 0) * (Number(item.cantidad) || 0), 0,
+  const carrito = obtenerCarrito().map((item) =>
+    String(item.id) === String(id)
+      ? { ...item, cantidad: nuevaCantidad }
+      : item,
   )
 
-// El resumen mantiene la fórmula utilizada por la tienda: subtotal + IVA (19%).
-export const obtenerTotalesCarrito = () => {
-  const subtotal = obtenerSubtotalCarrito()
-  const iva = Math.round(subtotal * 0.19)
-  return { subtotal, iva, total: subtotal + iva }
+  return guardarCarrito(carrito)
 }
 
-export default {
-  obtenerCarrito,
-  agregarAlCarrito,
-  actualizarCantidadCarrito,
-  eliminarDelCarrito,
-  vaciarCarrito,
-  obtenerCantidadCarrito,
-  obtenerSubtotalCarrito,
-  obtenerTotalesCarrito,
+// Elimina un producto del carrito.
+export const eliminarDelCarrito = (id) => {
+  const carrito = obtenerCarrito().filter(
+    (item) => String(item.id) !== String(id),
+  )
+
+  return guardarCarrito(carrito)
+}
+
+// Vacía el carrito.
+export const vaciarCarrito = () => guardarCarrito([])
+
+// Suma unidades, no filas: dos martillos y un taladro muestran un contador de 3.
+export const obtenerCantidadCarrito = () =>
+  obtenerCarrito().reduce(
+    (total, item) => total + (Number(item.cantidad) || 0),
+    0,
+  )
+
+// Calcula el importe de los productos.
+export const obtenerSubtotalCarrito = () =>
+  obtenerCarrito().reduce(
+    (total, item) =>
+      total +
+      (Number(item.precio) || 0) * (Number(item.cantidad) || 0),
+    0,
+  )
+
+// Los precios del catálogo son precios finales con IVA incluido.
+export const calcularImportes = (carrito = obtenerCarrito()) => {
+  const total = carrito.reduce((suma, item) => suma + Number(item.precio) * Number(item.cantidad), 0)
+  // Divide el precio final por 1,19 para separar el neto; no vuelve a sumar IVA al total.
+  const neto = Math.round(total / 1.19)
+  return { subtotal: total, neto, iva: total - neto, total }
 }

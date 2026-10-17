@@ -15,15 +15,16 @@ function Productos() {
 
   // Filtra por nombre o categoría sin modificar la lista original.
   const productosFiltrados = useMemo(() => {
-    const texto = busqueda.trim().toLowerCase()
+    const normalizar = (valor) => String(valor || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+    const texto = normalizar(busqueda.trim())
 
     if (!texto) {
       return productos
     }
 
     return productos.filter((producto) => {
-      const nombre = String(producto.nombre || '').toLowerCase()
-      const categoria = String(producto.categoria || '').toLowerCase()
+      const nombre = normalizar(producto.nombre)
+      const categoria = normalizar(producto.categoria)
 
       return nombre.includes(texto) || categoria.includes(texto)
     })
