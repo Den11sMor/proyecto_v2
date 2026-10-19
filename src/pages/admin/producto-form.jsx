@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import {
   actualizarProducto,
@@ -26,30 +26,33 @@ const imagenesDisponibles = [
 
 function ProductoForm() {
   const { id } = useParams()
+
+  return <FormularioProducto key={id || 'nuevo'} id={id} />
+}
+
+function FormularioProducto({ id }) {
   const navigate = useNavigate()
   const editando = Boolean(id)
 
-  const [formulario, setFormulario] = useState(productoInicial)
-  const [errores, setErrores] = useState({})
-  const [errorGeneral, setErrorGeneral] = useState('')
-
-  useEffect(() => {
+  const producto = useMemo(() => {
     if (!editando) {
-      return
+      return productoInicial
     }
 
-    const producto = obtenerProductoPorId(id)
-
-    if (!producto) {
-      setErrorGeneral('Producto no encontrado.')
-      return
-    }
-
-    setFormulario(producto)
+    return obtenerProductoPorId(id)
   }, [editando, id])
+
+  const [formulario, setFormulario] = useState(
+    () => producto || productoInicial,
+  )
+  const [errores, setErrores] = useState({})
+  const [errorGeneral, setErrorGeneral] = useState(
+    editando && !producto ? 'Producto no encontrado.' : '',
+  )
 
   const actualizarCampo = (event) => {
     const { name, value } = event.target
+
     setFormulario((anterior) => ({
       ...anterior,
       [name]: value,
@@ -69,6 +72,11 @@ function ProductoForm() {
 
     try {
       if (editando) {
+        if (!producto) {
+          setErrorGeneral('Producto no encontrado.')
+          return
+        }
+
         actualizarProducto(id, formulario)
       } else {
         crearProducto(formulario)
@@ -150,11 +158,14 @@ function ProductoForm() {
           onChange={actualizarCampo}
           maxLength="500"
         />
-        {errores.descripcion && <p className="error">{errores.descripcion}</p>}
+        {errores.descripcion && (
+          <p className="error">{errores.descripcion}</p>
+        )}
 
         {errorGeneral && <p className="error">{errorGeneral}</p>}
 
         <button type="submit">Guardar producto</button>
+
         <Link className="btn" to="/admin/productos">
           Cancelar
         </Link>
