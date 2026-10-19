@@ -14,7 +14,7 @@ it('conecta cantidad, subtotal, contador y eliminación en la interfaz', () => {
   expect(obtenerCarrito()[0].cantidad).toBe(3)
   expect(screen.getByRole('link', { name: 'Carrito, 3 productos' })).toBeInTheDocument()
   expect(screen.getAllByText(/30\.000/).length).toBeGreaterThan(0)
-  fireEvent.click(screen.getByRole('button', { name: 'Eliminar Llave inglesa' }))
+  fireEvent.click(screen.getByRole('button', { name: `Eliminar ${p.nombre}` }))
   expect(screen.getByRole('link', { name: 'Carrito, 0 productos' })).toBeInTheDocument()
   expect(screen.getByText('Tu carrito está vacío.')).toBeInTheDocument()
 })

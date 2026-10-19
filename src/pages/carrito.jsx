@@ -8,8 +8,8 @@ import CartSummary from '../components/cart/CartSummary'
 
 export default function Carrito() {
   // El servicio lee los productos persistidos; el hook mantiene esta vista actualizada.
-  useStoredValue(STORAGE_KEYS.CART)
-  const productos = obtenerCarrito()
+  const productosGuardados = useStoredValue(STORAGE_KEYS.CART, [])
+  const productos = Array.isArray(productosGuardados) ? productosGuardados : obtenerCarrito()
   const [mensaje, setMensaje] = useState('')
   // Centraliza las acciones del carrito y muestra el error del servicio si fallan.
   const ejecutar = (accion) => {

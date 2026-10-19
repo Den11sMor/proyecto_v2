@@ -34,3 +34,14 @@ export function guardarSesion(usuario) {
 export function cerrarSesion() {
   return removeStorageItem(STORAGE_KEYS.SESSION);
 }
+// Valida las credenciales contra las cuentas registradas en el almacenamiento local.
+export function iniciarSesion(correo, password) {
+  const usuarios = getStorageItem(STORAGE_KEYS.USERS, [])
+  const correoNormalizado = String(correo || '').trim().toLowerCase()
+  const usuario = Array.isArray(usuarios)
+    ? usuarios.find((item) => item.correo?.toLowerCase() === correoNormalizado && item.password === password)
+    : null
+
+  if (!usuario) throw new Error('Correo o contraseña incorrectos.')
+  return guardarSesion(usuario)
+}

@@ -1,16 +1,43 @@
-# React + Vite
+# Ferretería Los Maestros — Frontend React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web de tienda construida con React, React Router y Vite. El catálogo, los usuarios, la sesión y el carrito de este prototipo se guardan en `localStorage` del navegador; no se trata de un backend seguro ni de una base de datos compartida.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js 20.19+ (o una versión compatible con Vite 8).
+- npm.
 
-## React Compiler
+## Instalación y ejecución
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+Vite mostrará la dirección local para abrir la tienda en el navegador.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Comandos de calidad
+
+```bash
+npm test       # Ejecuta las pruebas unitarias con Vitest
+npm run build  # Genera la versión de producción en dist/
+npm run lint   # Ejecuta ESLint
+```
+
+La primera instalación debe ejecutarse con `npm install` para sincronizar `package-lock.json` con las dependencias de pruebas añadidas.
+
+## Estructura principal
+
+- `src/pages/`: páginas de la tienda, autenticación y administración.
+- `src/components/`: navegación, catálogo y componentes del carrito.
+- `src/services/`: operaciones de productos, usuarios, sesión y carrito.
+- `src/hooks/`: hooks de estado compartido.
+- `src/utils/`: almacenamiento, rutas, constantes y validaciones.
+- `src/tests/`: pruebas unitarias y de componentes.
+- `docs/`: documentación complementaria de testing.
+
+## Limitaciones del prototipo
+
+- Los datos se guardan localmente en el navegador y no se sincronizan entre dispositivos.
+- Las contraseñas se almacenan en `localStorage`; esto solo sirve para una demostración académica. En un sistema real se requiere backend, autenticación segura y contraseñas protegidas con hash.
+- La lista de regiones y comunas del registro es parcial y de ejemplo.

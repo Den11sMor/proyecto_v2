@@ -28,6 +28,14 @@ export const crearUsuario = (datos) => {
     throw new Error('El correo es obligatorio.')
   }
 
+  if (!datos.password || String(datos.password).length < 4) {
+    throw new Error('La contraseña debe tener al menos 4 caracteres.')
+  }
+
+  if (!datos.nombre?.trim() || !datos.apellidos?.trim()) {
+    throw new Error('El nombre y los apellidos son obligatorios.')
+  }
+
   if (
     usuarios.some(
       (usuario) => usuario.correo?.toLowerCase() === correo
@@ -36,14 +44,19 @@ export const crearUsuario = (datos) => {
     throw new Error('Este correo ya está registrado.')
   }
 
+  const id = typeof crypto !== 'undefined' && crypto.randomUUID
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(16).slice(2)}`
   const nuevoUsuario = {
     ...datos,
-    id: crypto.randomUUID(),
+    id,
     correo,
   }
 
-  // Guarda la lista actualizada.
-  setStorageItem(STORAGE_KEYS.USERS, [...usuarios, nuevoUsuario])
+  // Guarda la lista actualizada y reporta errores de almacenamiento.
+  if (!setStorageItem(STORAGE_KEYS.USERS, [...usuarios, nuevoUsuario])) {
+    throw new Error('No se pudo guardar el usuario.')
+  }
 
   return nuevoUsuario
 }

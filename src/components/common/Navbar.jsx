@@ -16,8 +16,10 @@ const enlaces = [
 // Barra de navegación de la tienda.
 function Navbar() {
   // Escucha el carrito para refrescar el contador sin recargar la página.
-  useStoredValue(STORAGE_KEYS.CART)
-  const cantidadCarrito = obtenerCantidadCarrito()
+  const carritoGuardado = useStoredValue(STORAGE_KEYS.CART, [])
+  const cantidadCarrito = Array.isArray(carritoGuardado)
+    ? carritoGuardado.reduce((total, item) => total + (Number(item.cantidad) || 0), 0)
+    : obtenerCantidadCarrito()
   const { usuario, esAdministrador, cerrarSesion } = useAuth()
 
   return (

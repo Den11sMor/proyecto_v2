@@ -9,12 +9,12 @@ export const validarProducto = (producto) => {
     errores.categoria = 'La categoría es obligatoria.'
   }
 
-  if (producto.precio === '' || Number(producto.precio) <= 0) {
+  if (producto.precio === '' || !Number.isFinite(Number(producto.precio)) || Number(producto.precio) <= 0) {
     errores.precio = 'El precio debe ser mayor a 0.'
   }
 
-  if (producto.stock === '' || Number(producto.stock) < 0) {
-    errores.stock = 'El stock no puede ser negativo.'
+  if (producto.stock === '' || !Number.isInteger(Number(producto.stock)) || Number(producto.stock) < 0) {
+    errores.stock = 'El stock debe ser un número entero igual o mayor que 0.'
   }
 
   if (!producto.imagen?.trim()) {
